@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Conditional Demo</title>
+  </head>
+  <body>
+
+    <script type="text/javascript">
+
+    var confirmSteak = confirm("Do you like steak?");
+
+    if (confirmSteak) { 
+    	alert("Heres a steak sandwich?");
+    }
+
+    else {
+    	alert ("Here is some tofu");
+
+    }
+
+    var Drinkconfirm = confirm ("Are you legal drinking age");
+
+    if (Drinkconfirm) {
+    	var birthyear= prompt("What is your birthyear?");
+    }
+
+    if (birthyear < 1995) {
+    	alert("Drink up"); var Whattodrink = prompt(" What would you like to drink?");
+
+     alert( Whattodrink + " coming right up!");
+    }
+
+    /*else if (Whattodrink = 2); {
+        alert("Tequila Sunrise coming up!");
+    }
+
+    else if (Whattodrink = 3); {
+        alert("guinness on the way")
+    }
+    */
+
+    else { 
+    	alert("Please have some milk");
+
+    }
+
+
+
+
+    </script>
+	</body>
+	</html>
