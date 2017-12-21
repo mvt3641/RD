@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weather Map</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 text-center">
+        <input type="text" placeholder="City"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+        <input type="text" placeholder="Zip Code"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 text-center">
+        <h2>City: <span id="city"></span></h2>
+        <h2>Main Weather: <span id="main_weather"></span></h2>
+        <h2>Description: <span id="description_weather"></span></h2>
+        <img id="weather_image" src="">
+        <h2>Temperature: <span id="temperature"></span></h2>
+        <h2>Pressure: <span id="pressure"></span></h2>
+        <h2>Humidity: <span id="humidity"></span></h2>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+    var appID = "eb7acd14dcfc608e19796902cddb4326";
+
+    $(".query_btn").click(function(){
+        var query_param = $(this).prev().val();
+
+
+        if ($(this).prev().attr("placeholder") == "City") {
+            var weather = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID;
+        } else if ($(this).prev().attr("placeholder") == "Zip Code") {
+            var weather = "http://api.openweathermap.org/data/2.5/weather?zip=" + query_param + "&APPID=" + appID;
+        };
+
+          $.getJSON(weather,function(json){
+            $("#city").html(json.name);
+            $("#main_weather").html(json.weather[0].main);
+            $("#description_weather").html(json.weather[0].description);
+            $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+            $("#temperature").html(json.main.temp);
+            $("#pressure").html(json.main.pressure);
+            $("#humidity").html(json.main.humidity);
+    	});
+	})
+
+	 // Optional Code for temperature conversion
+    var fahrenheit = true;
+
+    $("#convertToCelsius").click(function() {
+        if (fahrenheit) {
+            $("#temperature").text(((($("#temperature").text() - 32) * 5) / 9));
+        }
+        fahrenheit = false;
+    });
+
+    $("#convertToFahrenheit").click(function() {
+        if (fahrenheit == false) {
+            $("#temperature").text((($("#temperature").text() * (9/5)) + 32));
+        }
+        fahrenheit = true;
+    });
+});
+
+
+
+</script>
+
+
+</body>
+</html>

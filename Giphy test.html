@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Giphy Test</title>
+<head></head>
+
+<body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+	
+	var queryURL = 'http://api.giphy.com/v1/gifs/search?q=alien&api_key=whcDy9tQWnvkkuHRo6JUKC0YeowA9EHa'
+	$.ajax({url:queryURL, method: 'GET'})
+	.done(function(response){
+		console.log(response);
+	});
+
+var queryURL = 'http://api.giphy.com/v1/gifs/search?q=predator&api_key=whcDy9tQWnvkkuHRo6JUKC0YeowA9EHa'
+	$.ajax({url:queryURL, method: 'GET'})
+	.done(function(response){
+		console.log(response);
+	});
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
