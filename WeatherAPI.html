@@ -71,11 +71,12 @@
             $("#temperature").html(json.main.temp);
             $("#pressure").html(json.main.pressure);
             $("#humidity").html(json.main.humidity);
+            console.log(json);
     	});
 	})
 
 	 // Optional Code for temperature conversion
-    var fahrenheit = true;
+   /* var fahrenheit = true;
 
     $("#convertToCelsius").click(function() {
         if (fahrenheit) {
@@ -89,7 +90,7 @@
             $("#temperature").text((($("#temperature").text() * (9/5)) + 32));
         }
         fahrenheit = true;
-    });
+    });*/
 });
 
 

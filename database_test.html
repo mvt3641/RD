@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+	<meta charset="UTF-8">
+	<title>Click button with Firebase</title>
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+
+	</head>
+
+
+	<body>
+		
+	<h1 style="font-weight: bolder;">You have clicked <span id="click-value"></span> times!</h1>
+
+
+	<button id="click-button">Click Me!</button>
+
+
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+	 <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCjhLmi4o46jjxQurtoK476uff42hzmwUQ",
+    authDomain: "bravofire-8796e.firebaseapp.com",
+    databaseURL: "https://bravofire-8796e.firebaseio.com",
+    projectId: "bravofire-8796e",
+    storageBucket: "bravofire-8796e.appspot.com",
+    messagingSenderId: "623378647968"
+  	};
+ 	 firebase.initializeApp(config);
+	
+
+
+
+
+ 	 // get a refence to the database servivce
+ 	 var database =firebase.database();
+
+
+ 	 // setting inital value of click counter to zero
+
+ 	 var clickCounter = 0;
+
+
+
+ 	 $("#click-button>").on("click", function(){
+
+ 	 	clickCounter++;
+
+
+
+ 	 	//Store Click data to firebase in JSON property called clickCount
+ 	 	// note how er are using Firebase .set() method.
+ 	 	database.ref().set({
+ 	 		clickCount:clickCounter
+ 	 	});
+
+ 	 });
+
+ 	 // Using .on ("value",function(snapshot)) syntax will retrieve the data from the database (both initally and every time somthing changes) this will sotre data inside the varibable "snapshot" We could rename "snapshot" to anything.
+
+ 	 database.ref().on("value", function(snapshot){
+
+ 	 	//console the value of the snapshot
+ 	 	console.log(snapshot.val());
+
+ 	 	// update the html with value from server
+ 	 	$("#click-value").text(snapshot.val().clickCount);
+
+ 	 	// Then update the clickCounter variable with data from the database
+ 	 	clickCounter = snapshot.val().clickCount;
+
+
+ 	 	// If an error occures it will be stored in "errorObject"
+ 	 	}, function(errorObject) {
+
+      // In case of error this will print the error
+      console.log("The read failed: " + errorObject.code);
+
+
+ 	 });
+
+	</script>
+
+	</body>
+	</html>
