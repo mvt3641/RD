@@ -40,6 +40,9 @@
     </div>
 </div>
 
+  <div id="forecastWin">
+  </div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -66,11 +69,13 @@
 
         $.getJSON(weather,function(json){
 
-          for (var key in json.list) {
-        if (json.list.hasOwnProperty(key)) {
-          console.log(key);
+          for (var i = 0; i < json.list.length; i++) {
+            var FC =$("<div>")
+            FC.append(json.list[i].dt_txt);
+            $("#forecastWin").prepend(FC);
+          console.log(json.list[i].dt_txt);
         }
-        }
+
           $("#TimeFrame").html(json.list[0].dt_txt);
           //Temp coversion//
           function tempconvert () {
