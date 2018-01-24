@@ -69,28 +69,41 @@
 
         $.getJSON(weather,function(json){
 
+
           for (var i = 0; i < json.list.length; i++) {
             var FC =$("<div>")
-            FC.append(json.list[i].dt_txt);
-            $("#forecastWin").prepend(FC);
-          console.log(json.list[i].dt_txt);
-        }
+            var Time = json.list[i].dt_txt;
+            var Temp = json.list[i].main.temp;
+            var Wind = json.list[i].wind.speed;
+            var mainDesc = json.list[i].weather[0].main;
+
+            FC.append("Time: "+ Time+ " Temperature: "+Temp+" Wind: "+Wind+" Description: "+mainDesc);
+            // FC.append(json.list[i].dt_txt && );
+            // FC.append(json.list[i].wind.speed);
+            // FC.append(json.list[i].weather[0].main);
+            $("#forecastWin").append(FC);
+            console.log(json.list[i].dt_txt);
+            console.log(json.list[i].wind.speed);
+            console.log(json.list[i].weather[0].main);
+        };
 
           $("#TimeFrame").html(json.list[0].dt_txt);
-          //Temp coversion//
-          function tempconvert () {
-          var tempmath =(((json.list[0].main.temp-273.15)*1.8)+32);
-          return tempmath.toFixed(2);
-         };
-         $("#temperature").html(tempconvert()+"F");
-         $("#description_weather").html(json.list[0].weather[0].main);
-         function windconvert(){
-         var windmath =((json.list[0].wind.speed)*1.9438445);
-         return windmath.toFixed(2);
-         };
-         $("#wind").html(windconvert()+"Knts Deg: "+(json.list[0].wind.deg));
-          console.log(json);
-    	});
+
+            $("#temperature").html(tempconvert()+"F");
+           //Temp coversion//
+           function tempconvert() {
+           var tempmath =(((json.list[0].main.temp-273.15)*1.8)+32);
+           return tempmath.toFixed(2);
+            };
+           $("#description_weather").html(json.list[0].weather[0].main);
+             //Wind conversion
+            function windconvert(){
+            var windmath =((json.list[0].wind.speed)*1.9438445);
+            return windmath.toFixed(2);
+            };
+           $("#wind").html(windconvert()+"Knts Deg: "+(json.list[0].wind.deg));
+            console.log(json);
+      	});
 	})
 
 
