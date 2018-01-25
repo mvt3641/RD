@@ -37,10 +37,18 @@
 					border: 3px solid black;
 					float:unset;
 
+
 }
 
 .Current-Weather-Header{
 	width:750px;
 	border: 3px solid black;
 	font-weight: bold;
+}
+
+#lineChart{
+	position: relative;
+	top:-400px;
+	left:200px;
+	border: 2px solid black;
 }

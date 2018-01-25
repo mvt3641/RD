@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Weather Forecast</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.v2.css">
+</head>
+
+<body>
+
+
+
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 text-left">
+      <input type="text" placeholder="Current Weather"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+      <input type="text" placeholder="Location Forecast"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+    </div>
+  </div>
+
+  <header class="Current-Weather-Header" style="background-color:#dde;">Current Weather
+  </header>
+
+  <div id="CurrentWin" class="CWindow">
+    <h4>City: <span id="city"></span></h4>
+    <h4>Main Weather: <span id="main_weather"></span></h4>
+    <h4>Description: <span id="description_weather"></span></h4>
+    <img id="weather_image" src="">
+    <h4>Temperature: <span id="temperature"></span></h4>
+    <h4>Pressure: <span id="pressure"></span></h4>
+    <h4>Humidity: <span id="humidity"></span></h4>
+    <h4>Wind: <span id="wind"></span></h4>
+
+
+  </div>
+
+  <header class="Forecast-header" style="background-color:#dde;"> 5 day Weather Forecast
+  </header>
+  <div id="forecastWin" class="FWindow">
+  </div>
+
+  <canvas id="lineChart" width="400px" height="400px"></canvas>
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var appID = "eb7acd14dcfc608e19796902cddb4326";
+
+      $(".query_btn").click(function() {
+
+        var query_param = $(this).prev().val();
+
+
+        if ($(this).prev().attr("placeholder") == "Current Weather") {
+          var weather = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID;
+
+          $.getJSON(weather, function(json) {
+
+
+            $("#city").html(json.name);
+            $("#main_weather").html(json.weather[0].main);
+            $("#description_weather").html(json.weather[0].description);
+            $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+            //Temp coversion//
+            function tempconvert() {
+              var tempmath = (((json.main.temp - 273.15) * 1.8) + 32);
+              return tempmath.toFixed(2);
+            };
+
+            $("#temperature").html(tempconvert() + "F");
+            $("#pressure").html(json.main.pressure + "mb/hPa");
+            $("#humidity").html(json.main.humidity + "%");
+            //Wind knots Convert//
+            function windconvert() {
+              var windmath = ((json.wind.speed) * 1.9438445);
+              return windmath.toFixed(2);
+            };
+            $("#wind").html(windconvert() + "Knts Deg: " + (json.wind.deg));
+
+            console.log(json);
+          });
+
+
+        } else if ($(this).prev().attr("placeholder") == "Location Forecast") {
+          var weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + query_param + "&APPID=" + appID;
+
+
+          $.getJSON(weather, function(json) {
+
+            for (var i = 0; i < json.list.length; i++) {
+              var FC = $("<div id='Newforecast'>")
+              var City = json.city.name;
+              var Time = json.list[i].dt_txt;
+              var Temp = (((json.list[0].main.temp - 273.15) * 1.8) + 32).toFixed(2);
+              var Wind = ((json.list[i].wind.speed) * 1.9438445).toFixed(2);
+              var mainDesc = json.list[i].weather[0].main;
+
+              FC.append("City: " + City + "  Time(GMT): " + Time + "  Temperature: " + Temp + "  Wind: " + Wind + "  Description: " + mainDesc);
+              $("#forecastWin").prepend(FC);
+              // console.log(json.list[i].dt_txt);
+              // console.log(json.list[i].wind.speed);
+              // console.log(json.list[i].weather[0].main);
+
+
+
+            };
+            ///////////////////////////// Chart.js testing//////////////////////////////////////////////////////////////////////////////////////////////
+            function drawLineChart() {
+              var labels = [],
+                data = [];
+
+              $(labels).push(json.list[0].dt_txt);
+              $(data).push(json.list[0].wind.speed);
+
+              var tempData = {
+                labels: labels,
+                datasets: [{
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: data
+                }]
+              };
+
+              // Get the context of the canvas element we want to select
+              var ctx = document.getElementById("lineChart").getContext("2d");
+
+              // Instantiate a new chart
+              var myLineChart = new Chart(ctx).Line(tempData);
+
+
+            };
+
+
+            drawLineChart();
+            console.log(json);
+          });
+        };
+      });
+
+    });
+
+
+    // var CHART = document.getElementById("lineChart");
+    // console.log(CHART);
+    // let lineChart = new Chart(CHART, {
+    //   type: 'line',
+    //   data: {
+    //   labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+    //   datasets: [{
+    //       data: [86,114,106,106,107,111,133,221,783,2478],
+    //       label: "Africa",
+    //       borderColor: "#3e95cd",
+    //       fill: false },
+    //     // }, {
+    //     //   data: [282,350,411,502,635,809,947,1402,3700,5267],
+    //     //   label: "Asia",
+    //     //   borderColor: "#8e5ea2",
+    //     //   fill: false
+    //     // }, {
+    //     //   data: [168,170,178,190,203,276,408,547,675,734],
+    //     //   label: "Europe",
+    //     //   borderColor: "#3cba9f",
+    //     //   fill: false
+    //     // }, {
+    //     //   data: [40,20,10,16,24,38,74,167,508,784],
+    //     //   label: "Latin America",
+    //     //   borderColor: "#e8c3b9",
+    //     //   fill: false
+    //     // }, {
+    //     {  data: [6,3,2,2,7,26,82,172,312,433],
+    //       label: "North America",
+    //       borderColor: "#c45850",
+    //       fill: false
+    //     }
+    //   ]
+    // },
+    // options: {
+    //   title: {
+    //     display: true,
+    //     text: 'World population per region (in millions)'
+    //   }
+    // }
+    //
+    // })
+  </script>
+
+
+
+</body>
+
+</html>
