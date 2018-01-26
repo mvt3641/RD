@@ -59,4 +59,15 @@ function scaleBannerVideoSize(element){
         $('.homepage-hero-module .video-container video').addClass('fadeIn animated');
 
     });
-}
+};
+
+var update;
+  (update = function() {
+     document.getElementById("TimeNow")
+    .innerHTML = moment().format('MMMM Do YYYY, HH:mm:ss');
+  })();
+  setInterval(update, 1000);
+
+//$(document).on("click",function(){
+
+//});
