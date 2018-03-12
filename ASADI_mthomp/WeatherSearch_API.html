@@ -1,0 +1,125 @@
+
+<head>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+  <script type="text/javascript">
+  	$( document ).ready(function() {
+      var appID = "eb7acd14dcfc608e19796902cddb4326";
+
+      $(".query_btn").click(function(){
+          event.preventDefault();
+          var query_param = $(this).prev().val();
+
+
+          if ($(this).prev().attr("placeholder") == "City") {
+              var weather = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID;
+          } else if ($(this).prev().attr("placeholder") == "Zip Code") {
+              var weather = "http://api.openweathermap.org/data/2.5/weather?zip=" + query_param + "&APPID=" + appID;
+          };
+
+
+
+            $.getJSON(weather,function(json){
+              $("#city").html(json.name);
+              $("#main_weather").html(json.weather[0].main);
+              $("#description_weather").html(json.weather[0].description);
+              $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+               //Temp coversion//
+               function tempconvert () {
+                  var tempmath =(((json.main.temp-273.15)*1.8)+32);
+                  return tempmath.toFixed(2);
+              };
+
+              $("#temperature").html(tempconvert()+"F");
+              $("#pressure").html(json.main.pressure+"mb/hPa");
+              $("#humidity").html(json.main.humidity+"%");
+              //Wind knots Convert//
+              function windconvert(){
+              var windmath =((json.wind.speed)*1.9438445);
+              return windmath.toFixed(2);
+              }
+              $("#wind").html(windconvert()+"Knts Deg: "+(json.wind.deg));  
+              console.log(json);
+      	});
+  	})
+
+  	 // Optional Code for temperature conversion
+     /* var fahrenheit = true;
+
+      $("#convertToCelsius").click(function() {
+          if (fahrenheit) {
+              $("#temperature").text(((($("#temperature").text() - 32) * 5) / 9));
+          }
+          fahrenheit = false;
+      });
+
+      $("#convertToFahrenheit").click(function() {
+          if (fahrenheit == false) {
+              $("#temperature").text((($("#temperature").text() * (9/5)) + 32));
+          }
+          fahrenheit = true;
+      });*/
+  });
+
+
+
+</script>
+<style>
+.weather_search{
+  background-color: #fff;
+}
+</style>
+</head>
+<header>
+  <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+  <!--<h2>Site Helium Status</h2>-->
+
+</header>
+
+<!-- widget div-->
+<div>
+
+  <!-- widget edit box -->
+
+  <!-- end widget edit box -->
+
+  <!-- widget content -->
+  <div class="widget-body no-padding">
+
+    <form action="" class="smart-form">
+      <header>
+        Weather API
+      </header>
+    </form>
+
+		<form style="left:30px; position:absolute;" class="weather_search">
+		    <div>
+		        <input type="text" placeholder="City"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+		        <input type="text" placeholder="Zip Code"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+		    </div>
+
+
+		<div class="weather_return">
+		    <div>
+		        <h2>City: <span id="city"></span></h2>
+		        <h2>Main Weather: <span id="main_weather"></span></h2>
+		        <h2>Description: <span id="description_weather"></span></h2>
+		        <img id="weather_image" src="">
+		        <h2>Temperature: <span id="temperature"></span></h2>
+		        <h2>Pressure: <span id="pressure"></span></h2>
+		        <h2>Humidity: <span id="humidity"></span></h2>
+            <h2>Wind: <span id="wind"></span></h2>
+		    </div>
+		</div>
+
+
+  </form>
+  <!-- end widget content -->
+
+
+</div>
+<!-- end widget div -->
+
+</div>

@@ -46,9 +46,18 @@
 	font-weight: bold;
 }
 
-#lineChart{
+/* #lineChart{
 	position: relative;
 	top:-400px;
 	left:200px;
 	border: 2px solid black;
+} */
+
+.chart-container{
+	position: relative;
+	margin:auto;
+	height: 80vh;
+	width:80vh;
+	bottom: 434px;
+  right: -324px;
 }

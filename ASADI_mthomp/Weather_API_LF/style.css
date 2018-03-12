@@ -1,0 +1,46 @@
+.row{
+	background-color: grey;
+}
+#forecastWin {
+	overflow:auto;
+	height:400px;
+	width:750px;
+	position: relative;
+	left: 800px;
+	border: 3px solid black;
+	top: -430px;
+}
+
+.FWindow div:nth-child(even) {
+		background-color: #79b;
+}
+
+#Newforecast{
+	font-weight: bold;
+	padding:10px;
+}
+
+.Forecast-header {
+	width:750px;
+	position: relative;
+	left: 800px;
+	border: 3px solid black;
+	position: relative;
+	top: -430px;
+	font-weight: bold;
+
+}
+
+.CWindow { height:400px;
+					width:750px;
+					position: relative;
+					border: 3px solid black;
+					float:unset;
+
+}
+
+.Current-Weather-Header{
+	width:750px;
+	border: 3px solid black;
+	font-weight: bold;
+}

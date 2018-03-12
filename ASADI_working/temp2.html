@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+     <style type="test/css">
+      body{
+        background-color:red;
+      }
+      
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Search</title>
+
+   
+  
+  </head>
+
+
+  <body>
+    <div class="container">
+
+<form>
+<div class="row">
+  <div class="col-md-4">
+    
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Site Name"  value="Atlanta">
+    </div>
+   
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Start Date" id="Start-Date">
+    </div>
+ 
+    <div class="col">
+      <input type="text" class="form-control" placeholder="End Date" id="End-Date">
+    </div>
+    
+  <button type="submit" class="btn btn-primary mb-2" id="search">Submit</button>
+   </div>
+  </div>
+</form>
+
+
+
+
+
+<!-- Current Report Table-->
+
+<div class="row">
+  <div class="col-md-8" style="font-size: 10px">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><strong>Search Report </strong></h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-hover" id='search-report-table'>
+                <thead>
+                  <tr>
+                    <th>Date MM/DD/YY</th>
+                    <th>Logged By</th>
+                    <th>Time Logged</th>
+                    <th>System Status</th>
+                    <th>Flight Altitude</th>
+                    <th>Reason Moored</th>
+                    <th>Launches</th>
+                    <th>Recoveries </th>
+                    <th>Tether Tension</th>
+                    <th>Ground Winds</th>
+                    <th>Winds Aloft</th>
+                    <th>Ground Temperature</th>
+                    <th>Barometric Pressure</th>
+                    <th>Pitch</th>
+                    <th>Helium Pressure</th>
+                    <th>Ballonet Pressure</th>
+                    <th>Notes</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+</div>
+
+
+
+
+      <!-- end of container -->
+    </div>
+
+  
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <!-- Script -->
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+<script> 
+     var config = {
+    apiKey: "AIzaSyCzntWHt0eQrf8_T7sNXd7HDcmHmJQK-xM",
+    authDomain: "realtime-d6489.firebaseapp.com",
+    databaseURL: "https://realtime-d6489.firebaseio.com",
+    projectId: "realtime-d6489",
+    storageBucket: "realtime-d6489.appspot.com",
+    messagingSenderId: "540451789449"
+  };
+  firebase.initializeApp(config);
+   </script> 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="app2.js"></script>
+  </body>
+</html>

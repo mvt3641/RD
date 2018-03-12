@@ -5,6 +5,7 @@
   <title>Weather Forecast</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.v2.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -39,8 +40,11 @@
   <div id="forecastWin" class="FWindow">
   </div>
 
-  <canvas id="lineChart" width="400px" height="400px"></canvas>
 
+
+<div id="chart">
+
+</div>
 
 
 
@@ -49,7 +53,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script> -->
+  <!-- Load d3.js and c3.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.7/d3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.min.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function() {
@@ -91,11 +98,12 @@
 
 
         } else if ($(this).prev().attr("placeholder") == "Location Forecast") {
-          var weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + query_param + "&APPID=" + appID;
-
+          // var weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + query_param + "&APPID=" + appID;
+            var weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + "Atlanta" + "&APPID=" + appID;
 
           $.getJSON(weather, function(json) {
-
+            var timeArr =[];
+            var WindArr =[];
             for (var i = 0; i < json.list.length; i++) {
               var FC = $("<div id='Newforecast'>")
               var City = json.city.name;
@@ -104,97 +112,70 @@
               var Wind = ((json.list[i].wind.speed) * 1.9438445).toFixed(2);
               var mainDesc = json.list[i].weather[0].main;
 
+
               FC.append("City: " + City + "  Time(GMT): " + Time + "  Temperature: " + Temp + "  Wind: " + Wind + "  Description: " + mainDesc);
               $("#forecastWin").prepend(FC);
-              // console.log(json.list[i].dt_txt);
-              // console.log(json.list[i].wind.speed);
-              // console.log(json.list[i].weather[0].main);
-
-
-
-            };
-            ///////////////////////////// Chart.js testing//////////////////////////////////////////////////////////////////////////////////////////////
-            function drawLineChart() {
-              var labels = [],
-                data = [];
-
-              $(labels).push(json.list[0].dt_txt);
-              $(data).push(json.list[0].wind.speed);
-
-              var tempData = {
-                labels: labels,
-                datasets: [{
-                  fillColor: "rgba(151,187,205,0.2)",
-                  strokeColor: "rgba(151,187,205,1)",
-                  pointColor: "rgba(151,187,205,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(151,187,205,1)",
-                  data: data
-                }]
-              };
-
-              // Get the context of the canvas element we want to select
-              var ctx = document.getElementById("lineChart").getContext("2d");
-
-              // Instantiate a new chart
-              var myLineChart = new Chart(ctx).Line(tempData);
-
+              //console.log(json);
+              console.log(Time);
+              console.log(Wind);
+              // var timeArr =[];
+              // var WindArr =[];
+              timeArr.push(Time);
+              WindArr.push(Wind);
 
             };
+          //console.log(json.list)
+
+          WindArr.unshift('data');
+
+        var chart = c3.generate({
+          bindto:"#chart",
+      data: {
+        columns: [WindArr]
+      },
+      axis:{
+        x:{
+          type: 'Time',
+          values: [timeArr]
+
+        }
+
+      }
+  });
+          })
+        }
 
 
-            drawLineChart();
-            console.log(json);
-          });
-        };
-      });
+//         WindArr.unshift('data');
+//
+//       var chart = c3.generate({
+//         bindto:"#chart",
+//     data: {
+//       columns: [WindArr]
+//     },
+//     axis:{
+//       x:{
+//         type: 'Time',
+//         categories: timeArr
+//       }
+//     }
+// });
 
-    });
 
+      })
+});
 
-    // var CHART = document.getElementById("lineChart");
-    // console.log(CHART);
-    // let lineChart = new Chart(CHART, {
-    //   type: 'line',
-    //   data: {
-    //   labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-    //   datasets: [{
-    //       data: [86,114,106,106,107,111,133,221,783,2478],
-    //       label: "Africa",
-    //       borderColor: "#3e95cd",
-    //       fill: false },
-    //     // }, {
-    //     //   data: [282,350,411,502,635,809,947,1402,3700,5267],
-    //     //   label: "Asia",
-    //     //   borderColor: "#8e5ea2",
-    //     //   fill: false
-    //     // }, {
-    //     //   data: [168,170,178,190,203,276,408,547,675,734],
-    //     //   label: "Europe",
-    //     //   borderColor: "#3cba9f",
-    //     //   fill: false
-    //     // }, {
-    //     //   data: [40,20,10,16,24,38,74,167,508,784],
-    //     //   label: "Latin America",
-    //     //   borderColor: "#e8c3b9",
-    //     //   fill: false
-    //     // }, {
-    //     {  data: [6,3,2,2,7,26,82,172,312,433],
-    //       label: "North America",
-    //       borderColor: "#c45850",
-    //       fill: false
-    //     }
-    //   ]
-    // },
-    // options: {
-    //   title: {
-    //     display: true,
-    //     text: 'World population per region (in millions)'
-    //   }
-    // }
-    //
-    // })
+  ///////////////////////////// C3J.js testing//////////////////////////////////////////////////////////////////////////////////////////////
+// var chart = c3.generate({
+//   bindto:"#chart",
+//   data:{
+//     columns:[
+//       ['data1', 30, 200, 100, 400, 150, 250],
+//       ['data2', 50, 20, 10, 40, 15, 25]
+//     ]
+//   }
+// });
+
   </script>
 
 

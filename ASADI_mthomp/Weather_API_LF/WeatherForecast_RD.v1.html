@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weather Forecast</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 text-left">
+        <input type="text" placeholder="Current Weather"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+        <input type="text" placeholder="Location Forecast"><button type="button" class="query_btn btn btn-default btn-sm">Search</button><br>
+    </div>
+</div>
+
+<header class="Current-Weather-Header" style="background-color:#dde;">Current Weather
+</header>
+
+<div id="CurrentWin" class="CWindow">
+  <h2>City: <span id="city"></span></h2>
+  <h2>Main Weather: <span id="main_weather"></span></h2>
+  <h2>Description: <span id="description_weather"></span></h2>
+  <img id="weather_image" src="">
+  <h2>Temperature: <span id="temperature"></span></h2>
+  <h2>Pressure: <span id="pressure"></span></h2>
+  <h2>Humidity: <span id="humidity"></span></h2>
+  <h2>Wind: <span id="wind"></span></h2>
+
+
+</div>
+
+  <header class="Forecast-header" style="background-color:#dde;"> 5 day Weather Forecast
+  </header>
+  <div id="forecastWin" class="FWindow">
+  </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+    var appID = "eb7acd14dcfc608e19796902cddb4326";
+
+    $(".query_btn").click(function(){
+
+        var query_param = $(this).prev().val();
+
+
+        if ($(this).prev().attr("placeholder") == "Current Weather") {
+            var weather = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID;
+
+            $.getJSON(weather,function(json){
+
+
+              $("#city").html(json.name);
+              $("#main_weather").html(json.weather[0].main);
+              $("#description_weather").html(json.weather[0].description);
+              $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+               //Temp coversion//
+               function tempconvert () {
+                  var tempmath =(((json.main.temp-273.15)*1.8)+32);
+                  return tempmath.toFixed(2);
+              };
+
+              $("#temperature").html(tempconvert()+"F");
+              $("#pressure").html(json.main.pressure+"mb/hPa");
+              $("#humidity").html(json.main.humidity+"%");
+              //Wind knots Convert//
+              function windconvert(){
+              var windmath =((json.wind.speed)*1.9438445);
+              return windmath.toFixed(2);
+            };
+              $("#wind").html(windconvert()+"Knts Deg: "+(json.wind.deg));
+
+                    console.log(json);
+              	});
+
+
+        } else if ($(this).prev().attr("placeholder") == "Location Forecast") {
+            var weather = "http://api.openweathermap.org/data/2.5/forecast?q=" + query_param + "&APPID=" + appID;
+
+
+            $.getJSON(weather,function(json){
+
+            for (var i = 0; i < json.list.length; i++) {
+            var FC =$("<div id='Newforecast'>")
+            var Time = json.list[i].dt_txt;
+            var Temp = (((json.list[0].main.temp-273.15)*1.8)+32).toFixed(2);
+            var Wind = ((json.list[i].wind.speed)*1.9438445).toFixed(2);
+            var mainDesc = json.list[i].weather[0].main;
+
+            FC.append("Time: "+ Time+ "  Temperature: "+Temp+"  Wind: "+Wind+"  Description: "+mainDesc);
+            $("#forecastWin").append(FC);
+            // console.log(json.list[i].dt_txt);
+            // console.log(json.list[i].wind.speed);
+            // console.log(json.list[i].weather[0].main);
+        };
+            console.log(json);
+      	});
+      };
+	})
+
+
+});
+
+
+
+</script>
+
+
+</body>
+</html>

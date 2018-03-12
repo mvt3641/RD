@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <title>Operations</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--link href="assets/css/bootstrap.min.css" rel="stylesheet"-->
+    <link href="assets/css/operation.css" rel="stylesheet">
+    <link href="assets/css/table.css" rel="stylesheet">
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script src="assets/javascript/operation.js"></script>
+    <script src="assets/firebase/heliumDB.js"></script>
+
+  </head>
+
+  <body>
+    <div class="navbar-nav navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html"><img src="images/logo30.png" alt="">ASADI</a>
+        </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="operationUI.html"><i class="icon-home icon-white"></i> Operations </a></li>
+              <li><a href="tables.html"><i class="icon-th icon-white"></i> HUB</a></li>
+              <li><a href="login.html"><i class="icon-lock icon-white"></i> Client </a></li>
+
+            </ul>
+          </div>
+        </div>
+    </div><!--divend-->
+     <br><br><br>
+   <div class="container">
+
+       <div class="row">
+         <!-- DONUT CHART BLOCK -->
+           <div class="col-sm-4 col-lg-4">
+            <div class="dash-unit">
+              <div id="load"></div>
+              <h2>45%</h2>
+            </div>
+           </div>
+
+         <!-- DONUT CHART BLOCK -->
+           <div class="col-sm-4 col-lg-4">
+            <div class="dash-unit">
+              <dtitle>Disk Space</dtitle>
+              <hr>
+                <div id="space"></div>
+                <h2>65%</h2>
+            </div>
+           </div>
+
+           <div class="col-sm-3 col-lg-3">
+             <!-- LOCAL TIME BLOCK -->
+                <div class="half-unit">
+                  <dtitle>Local Time</dtitle>
+                  <hr>
+                    <div class="clockcenter">
+                      <digiclock>12:45:25</digiclock>
+                    </div>
+                </div>
+
+                <!-- SERVER UPTIME -->
+                <div class="half-unit">
+                    <dtitle>Server Uptime</dtitle>
+                    <hr>
+                    <div class="cont">
+                    <p><img src="images/up.png" alt=""> <bold>Up</bold> | 356ms.</p>
+                  </div>
+                </div>
+           </div>
+       </div><!--row1 end-->
+
+       <div class="row">
+         <div class="col-sm-11 col-lg-11">
+           <!--div class="dash-unit-entry"-->
+           <div class="dash-unit-entry">
+             <ul class="nav nav-tabs">
+               <li class="active">
+                 <a href="#metricsTab" data-toggle="tab">System Flight Metrics</a>
+               </li>
+               <li>
+                 <a href="#flightTab" data-toggle="tab">Flight Data Log</a>
+               </li>
+               <li>
+                 <a href="#heliumTab" data-toggle="tab">Helium Status Log</a>
+               </li>
+             </ul>
+
+             <div class="tab-content">
+               <div id="metricsTab" class="tab-pane active">
+                <canvas id="line-chart" width="150" height="75"></canvas>
+               </div>
+               <div id="flightTab" class="tab-pane">
+                 <!--<div data-spy="scroll" data-target="#navbar-example2" data-offset="0"-->
+                 <div id="flightTableID"
+                      class="col-sm-12 col-lg-12" style="display:block; overflow: auto;" >
+                        <table class="display" id='flight-status-table'>
+                            <thead>
+                                  <tr>
+                                    <th>Date MM/DD/YY</th>
+                                    <th>Logged By</th>
+                                    <th>Time Logged</th>
+                                    <th>System</th>
+                                    <th>System Status</th>
+                                    <th>Flight Altitude</th>
+                                    <th>Reason Moored</th>
+                                    <th>Launches</th>
+                                    <th>Recoveries </th>
+                                    <th>Tether Tension</th>
+                                    <th>Ground Winds</th>
+                                    <th>Winds Aloft</th>
+                                    <th>Ground Temperature</th>
+                                    <th>Barometric Pressure</th>
+                                    <th>Pitch</th>
+                                    <th>Helium Pressure</th>
+                                    <th>Ballonet Pressure</th>
+                                    <th>Notes</th>
+                                  </tr>
+                            </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                        <br>
+                       <button type="button" class="btn btn-primary" onclick="SwapDivsWithClick('formId','flightTableID')">Add</button>
+              </div>
+
+               </div>
+               <div id="heliumTab" class="tab-pane">
+                 <!-- Entry Form -->
+                 <br>
+                 <form id="formId" style="display:none;">
+                     <div class="form-row">
+                       <div class="form-group col-md-4">
+                         <label for="inputHContainer1">Helium Container 1</label>
+                         <input type="text" class="form-control" id="inputHContainer1" placeholder="Helium Container 1">
+                       </div>
+                       <div class="form-group col-md-4">
+                         <label for="inputHContainer2">Helium Container 2</label>
+                         <input type="text" class="form-control" id="inputHContainer2" placeholder="Helium Container 2">
+                       </div>
+                       <div class="form-group col-md-4">
+                         <label for="inputHContainer3">Helium Container 3</label>
+                         <input type="text" class="form-control" id="inputHContainer3" placeholder="Helium Container 3">
+                       </div>
+                     </div>
+                     <div class="form-row">
+                       <div class="form-group col-md-4">
+                         <label for="inputHContainer4">Helium Container 4</label>
+                         <input type="text" class="form-control" id="inputHContainer4" placeholder="Helium Container 4">
+                       </div>
+                       <div class="form-group col-md-4">
+                         <label for="inputHExpended">Helium Expended</label>
+                         <input type="text" class="form-control" id="inputHExpended"  placeholder="Helium Expended">
+                       </div>
+                       <div class="form-group col-md-4">
+                         <label for="inputLoggedBy">Logged By</label>
+                         <input type="text" class="form-control" id="inputLoggedBy"  placeholder="Name">
+                       </div>
+                     </div>
+                     <div class="form-row">
+                       <div class="form-group col-md-4">
+                         <label for="inputTimeLogged">Time Logged</label>
+                         <input type="text" class="form-control" id="inputTimeLogged"  placeholder="ex. 0100, 0200">
+                       </div>
+                       <div class="form-group col-md-8">
+                         <label for="txtAreaNotes">Note</label>
+                         <textarea class="form-control" id="txtAreaNotes" rows="3"></textarea>
+                       </div>
+                     </div>
+
+                     <button type="button" class="btn btn-primary" onclick="saveHeliumData(),SwapDivsWithClick('formId','heliumTableID')">Save</button>
+                     <button type="button" class="btn btn-primary" onclick="SwapDivsWithClick('formId','heliumTableID')">Close</button>
+                 </form>
+
+                 <br>
+
+               		<div id="heliumTableID" class="col-sm-12 col-lg-12" style="display:block;" >
+                         <table class="display" id='helium-status-table'>
+                           <thead>
+                             <tr>
+                               <th>Time Entered</th>
+                               <th>Helium Container 1</th>
+                               <th>Helium Container 2</th>
+                               <th>Helium Container 3</th>
+                               <th>Helium Container 4</th>
+                               <th>Helium Expended</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                           </tbody>
+                         </table>
+                         <br>
+                        <button type="button" class="btn btn-primary" onclick="SwapDivsWithClick('formId','heliumTableID')">Add</button>
+               </div>
+
+           </div>
+         </div>
+       </div>
+   </div>
+ </div>
+</div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  </body>
+
+  </html>
